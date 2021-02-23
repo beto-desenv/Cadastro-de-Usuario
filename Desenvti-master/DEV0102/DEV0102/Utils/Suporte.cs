@@ -14,7 +14,7 @@ namespace DEV0102.Utils
             
             MailMessage objmail = new MailMessage();
             objmail.To.Add(emailDestinatario);
-            objmail.From = new MailAddress("renato.roe@gmail.com");
+            objmail.From = new MailAddress("beto.vieiracarlos@gmail.com");
             objmail.Body = corpoEmail;
             objmail.Subject = Assunto;
 
@@ -22,7 +22,7 @@ namespace DEV0102.Utils
             objsmtp.Host = "smtp.gmail.com";
             objsmtp.Port = 587;
             objsmtp.UseDefaultCredentials = false;
-            objsmtp.Credentials = new NetworkCredential("renato.roe@gmail.com", "Teste01&");
+            objsmtp.Credentials = new NetworkCredential("beto.vieiracarlos@gmail.com", "Roberto042612");
             objsmtp.EnableSsl = true;
             objsmtp.Send(objmail);
         }

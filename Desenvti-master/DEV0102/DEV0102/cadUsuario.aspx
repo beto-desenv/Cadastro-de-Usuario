@@ -14,7 +14,7 @@
             <h1>Cadastro de Usuário</h1>
             <label>Nome:</label><br />
             <asp:TextBox ID="txtNome" runat="server"></asp:TextBox><br />
-            <label>CEP:</label><br />
+            <label>CEP</label><br />
             <asp:TextBox ID="txtCEP" runat="server"></asp:TextBox> 
             <asp:Button ID="btnConsultaCEP" runat="server" Text="Consultar CEP" OnClick="btnConsultaCEP_Click" />
             <br />
