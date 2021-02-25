@@ -52,7 +52,7 @@
                     <asp:ButtonField ButtonType="Button" CommandName="Editar" Text="Editar" />
                 </Columns>
             </asp:GridView>
-
+            <asp:Button ID="btnAtualizar" runat="server" Text="Atualizar" OnClick="btnAtualizar_Click" OnClientClick="return confirm( 'Deseja realmente atualizar' )"/>
             <asp:HiddenField ID="hiddenfildCodigo" runat="server" Value="0" />
 
             <asp:SqlDataSource runat="server" ID="SqlDataSourceUsuario" ConnectionString='<%$ ConnectionStrings:DEV0102ConnectionString %>' SelectCommand="select '~/fotoUsuario/' + nomeFoto as caminhoFoto, * from tabusuario"></asp:SqlDataSource>
