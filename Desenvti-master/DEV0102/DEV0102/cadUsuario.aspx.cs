@@ -14,7 +14,21 @@ namespace DEV0102
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Request.ServerVariables["QUERY_STRING"].Contains("novoUsuario"))
+            {
+                panelUsuarioCadastrado.Visible = false;
+            }
+            else
+            {
+                if (Session["codigoUsuario"] == null)
+                { 
+                    Response.Redirect("Login.aspx");
+                }
+                else
+                { 
+                panelUsuarioCadastrado.Visible = true;
+                }
+            }
         }
 
         protected void btnConsultaCEP_Click(object sender, EventArgs e)
@@ -173,10 +187,6 @@ namespace DEV0102
             foreach (tabUsuario objU in objlstUsuario)
             {
                 ExibirMensagem(objU.nome);   
-            }
-            foreach (var item in collection)
-            {
-
             }
 
         }

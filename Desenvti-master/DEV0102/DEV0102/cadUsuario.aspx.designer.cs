@@ -123,6 +123,15 @@ namespace DEV0102
         protected global::System.Web.UI.WebControls.Button btnCadastrar;
 
         /// <summary>
+        /// Controle panelUsuarioCadastrado.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Modificar a declaração do campo de movimento do arquivo de designer para o arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel panelUsuarioCadastrado;
+
+        /// <summary>
         /// Controle gridUsuario.
         /// </summary>
         /// <remarks>
