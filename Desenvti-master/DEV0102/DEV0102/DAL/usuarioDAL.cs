@@ -67,9 +67,13 @@ namespace DEV0102.DAL
         {
             using (DEV0102Entities ctx = new DEV0102Entities())
             {
-                return ctx.tabUsuario.Where(campo => campo.codigo > 1).ToList();
-
+                return FiltrarUsuariosComCodigoMaiorQueUm(ctx.tabUsuario).ToList();
             }
+        }
+
+        internal static IEnumerable<tabUsuario> FiltrarUsuariosComCodigoMaiorQueUm(IEnumerable<tabUsuario> usuarios)
+        {
+            return usuarios.Where(usuario => usuario.codigo > 1);
         }
     }
 }

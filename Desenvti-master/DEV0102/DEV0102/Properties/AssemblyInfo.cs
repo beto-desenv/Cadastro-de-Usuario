@@ -21,6 +21,7 @@ using System.Runtime.InteropServices;
 
 // A GUID a seguir será referente à ID do typelib se este projeto for exposto ao COM
 [assembly: Guid("d9871c39-8472-4571-9bc8-b4bd319ade4a")]
+[assembly: InternalsVisibleTo("DEV0102.Tests")]
 
 // As informações de versão de um assembly consistem nos quatro valores a seguir:
 //

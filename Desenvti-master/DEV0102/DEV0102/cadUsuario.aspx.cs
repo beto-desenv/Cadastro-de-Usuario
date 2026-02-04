@@ -72,63 +72,80 @@ namespace DEV0102
         {
             try
             {
+                tabUsuario objusuario = new tabUsuario();
+                objusuario.bairro = txtBairro.Text;
+                objusuario.cep = txtCEP.Text;
+                objusuario.cidade = txtCidade.Text;
+                objusuario.email = txtEmail.Text;
+                objusuario.endereco = txtEndereco.Text;
+                objusuario.nome = txtNome.Text;
+                objusuario.senha = txtSenha.Text;
+                objusuario.uf = txtUF.Text;
+
+                tabUsuario objValidador = new tabUsuario();
+                usuarioDAL uDal = new usuarioDAL();
+
+                bool emEdicao = hiddenFieldCodigo.Value != "0";
+                if (emEdicao)
+                {
+                    objusuario.codigo = Convert.ToInt32(hiddenFieldCodigo.Value);
+                }
+
                 if (fupFoto.HasFile)
                 {
                     string caminhoArquivo = Server.MapPath("/fotoUsuario/");
                     string nomeArquivo = fupFoto.FileName;
 
                     fupFoto.SaveAs(caminhoArquivo + nomeArquivo);
-
-                    tabUsuario objusuario = new tabUsuario();
-                    objusuario.bairro = txtBairro.Text;
-                    objusuario.cep = txtCEP.Text;
-                    objusuario.cidade = txtCidade.Text;
-                    objusuario.email = txtEmail.Text;
-                    objusuario.endereco = txtEndereco.Text;
-                    objusuario.nome = txtNome.Text;
-                    objusuario.senha = txtSenha.Text;
-                    objusuario.uf = txtUF.Text;
                     objusuario.nomeFoto = fupFoto.FileName;
-
-                    tabUsuario objValidador = new tabUsuario();
-                    usuarioDAL uDal = new usuarioDAL();
-
-                    if (hiddenfildCodigo.Value != "0")
+                }
+                else if (emEdicao)
+                {
+                    tabUsuario usuarioAtual = uDal.ConsultarUsuarioPorCodigo(objusuario.codigo);
+                    if (usuarioAtual == null)
                     {
-                        objusuario.codigo = Convert.ToInt32(hiddenfildCodigo.Value);
-                        uDal.Editar(objusuario);
-                        hiddenfildCodigo.Value = "0";
-                        btnCadastrar.Text = "Cadastrar";
-                        gridUsuario.DataBind();
-                        LimparCampos();
-                        ExibirMensagem("Usuário Editado com sucesso!");                        
-
+                        ExibirMensagem("Usuário não encontrado para edição.");
+                        return;
                     }
-                    else
-                    {
 
-                        objValidador = uDal.consultarUsuarioPorEmail(txtEmail.Text);
-
-                        if (objValidador != null)
-                        {
-                            ExibirMensagem("Usuário já existe no banco de dados!");
-                        }
-                        else
-                        {
-                            uDal.cadastrarUsuario(objusuario);
-                            gridUsuario.DataBind();
-
-                            ExibirMensagem("Usuário cadastrado com sucesso!");
-                            Suporte objsup = new Suporte();
-                            string corpoEmail = "Olá " + txtNome.Text + ", bem vindo ao sistema, você já está cadastrado!";
-                            objsup.EnviarEmail("Bem vindo ao Sistema Desenvti", txtEmail.Text, corpoEmail);
-                            LimparCampos();
-                        }
-                    }
+                    objusuario.nomeFoto = usuarioAtual.nomeFoto;
                 }
                 else
                 {
                     ExibirMensagem("Selecione uma foto para o usuário");
+                    return;
+                }
+
+                if (emEdicao)
+                {
+                    uDal.Editar(objusuario);
+                    hiddenFieldCodigo.Value = "0";
+                    btnCadastrar.Text = "Cadastrar";
+                    gridUsuario.DataBind();
+                    LimparCampos();
+                    ExibirMensagem("Usuário Editado com sucesso!");
+
+                }
+                else
+                {
+
+                    objValidador = uDal.consultarUsuarioPorEmail(txtEmail.Text);
+
+                    if (objValidador != null)
+                    {
+                        ExibirMensagem("Usuário já existe no banco de dados!");
+                    }
+                    else
+                    {
+                        uDal.cadastrarUsuario(objusuario);
+                        gridUsuario.DataBind();
+
+                        ExibirMensagem("Usuário cadastrado com sucesso!");
+                        Suporte objsup = new Suporte();
+                        string corpoEmail = "Olá " + txtNome.Text + ", bem vindo ao sistema, você já está cadastrado!";
+                        objsup.EnviarEmail("Bem vindo ao Sistema Desenvti", txtEmail.Text, corpoEmail);
+                        LimparCampos();
+                    }
                 }
 
             }
@@ -144,9 +161,7 @@ namespace DEV0102
             if (e.CommandName == "Deletar")
             {
                 int linhaClicada = Convert.ToInt32(e.CommandArgument);
-                GridViewRow row = gridUsuario.Rows[linhaClicada];
                 int codigo = Convert.ToInt32(gridUsuario.DataKeys[linhaClicada]["codigo"].ToString());
-                //int codigoUsuario = Convert.ToInt32(row.Cells[1].Text);
 
                 usuarioDAL uDal = new usuarioDAL();
                 uDal.deletarUsuario(codigo);
@@ -157,9 +172,7 @@ namespace DEV0102
             else if (e.CommandName == "Editar")
             {
                 int linhaClicada = Convert.ToInt32(e.CommandArgument);
-                GridViewRow row = gridUsuario.Rows[linhaClicada];
                 int codigo = Convert.ToInt32(gridUsuario.DataKeys[linhaClicada]["codigo"].ToString());
-                //int codigoUsuario = Convert.ToInt32(row.Cells[1].Text);
 
                 usuarioDAL objDal = new usuarioDAL();
                 tabUsuario obj =  objDal.ConsultarUsuarioPorCodigo(codigo);
@@ -172,7 +185,7 @@ namespace DEV0102
                 txtNome.Text = obj.nome;
                 txtUF.Text = obj.uf;
 
-                hiddenfildCodigo.Value = obj.codigo.ToString();
+                hiddenFieldCodigo.Value = obj.codigo.ToString();
                 btnCadastrar.Text = "Salvar";
                 ExibirMensagem("Liberado para edição!");
             }
